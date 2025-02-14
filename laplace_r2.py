@@ -1,6 +1,8 @@
 # prompt: plot ax2 upside down
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Qt5Agg')
 from matplotlib.animation import FuncAnimation, PillowWriter
 
 
@@ -14,7 +16,7 @@ class Particle:
         y, x = self.location
         return self.Ex[y, x], self.Ey[y, x]
 
-def initialize_grid(size=1500):
+def initialize_grid(size=150):
     """Initialize the grid with boundary conditions."""
     grid = np.zeros((size, size))
     grid[size//3, size//4:3*size//4] = 1
@@ -59,7 +61,7 @@ def plot_results(frame, potential, Ex, Ey, particle_list, fig, ax1, ax2):
     E_magnitude = np.sqrt(Ex[::skip, ::skip] ** 2 + Ey[::skip, ::skip] ** 2)
     Ex_norm = Ex[::skip, ::skip] / (E_magnitude + 1e-10)
     Ey_norm = Ey[::skip, ::skip] / (E_magnitude + 1e-10)
-    ax2.quiver(x, y, Ex_norm, -Ey_norm)
+    ax2.quiver(x, y, Ex_norm, Ey_norm)
     ax2.set_title('Electric Field Lines')
     ax2.invert_yaxis()  # Invert y-axis for ax2
 
@@ -129,7 +131,7 @@ def main():
 
     ani = FuncAnimation(fig, animation_step, frames=100, interval=200)
     writer = PillowWriter(fps=5)  # Set frames per second
-    ani.save("animation10000.gif", writer=writer)  # Save animation as gif
+    ani.save("animation999.gif", writer=writer)  # Save animation as gif
     plt.show()
 
 
